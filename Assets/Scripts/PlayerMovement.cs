@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speedPlayer;
     private Rigidbody2D _pRb;
-    private float jumpForce = 10f;
+    private float jumpForce = 11f;
     public bool onGround = true;
     public Transform GroundCheck;
     public float checkRadius = 0.5f;
