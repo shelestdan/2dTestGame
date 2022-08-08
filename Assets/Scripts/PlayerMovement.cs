@@ -5,31 +5,28 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speedPlayer;
+    [SerializeField] private float jumpForce = 20f;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask ground;
+    private bool _onGround = true;
     private Rigidbody2D _pRb;
-    private float jumpForce = 20f;
-    public bool onGround = true;
-    public Transform GroundCheck;
-    public float checkRadius = 0.5f;
-    public LayerMask Ground;
-    private float moveInput;
-
+    private float _moveInput;
 
     private void Awake()
     {
         _pRb = GetComponent<Rigidbody2D>();
         _pRb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        _pRb.isKinematic = false;
     }
 
     private void FixedUpdate()
     {
-        moveInput = Input.GetAxis("Horizontal");
-        _pRb.velocity = new Vector2(moveInput * speedPlayer, _pRb.velocity.y);
+        _moveInput = Input.GetAxis("Horizontal");
+        _pRb.velocity = new Vector2(_moveInput * speedPlayer, _pRb.velocity.y);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && onGround)
+        if (Input.GetKeyDown(KeyCode.Space) && _onGround)
         {
             _pRb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
@@ -37,9 +34,8 @@ public class PlayerMovement : MonoBehaviour
         CheckingGround();
     }
 
-
-    public void CheckingGround()
+    private void CheckingGround()
     {
-        onGround = Physics2D.OverlapCircle(GroundCheck.position, checkRadius, Ground);
+        _onGround = Physics2D.OverlapBox(groundCheck.position, new Vector2(1.1f, 1.2f), 0, ground);
     }
 }
