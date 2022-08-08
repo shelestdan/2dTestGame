@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speedPlayer;
     private Rigidbody2D _pRb;
-    private float jumpForce = 11f;
+    private float jumpForce = 20f;
     public bool onGround = true;
     public Transform GroundCheck;
     public float checkRadius = 0.5f;
@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && onGround)
         {
-            _pRb.velocity = Vector2.up * jumpForce;
+            _pRb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
         
         CheckingGround();
