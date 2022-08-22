@@ -13,6 +13,9 @@ public class PlayerMovement : MonoBehaviour
     private bool _onGround = true;
     private Rigidbody2D _pRb;
     private float _moveInput;
+    private static readonly int Run = Animator.StringToHash("Run");
+    private static readonly int Jump = Animator.StringToHash("Jump");
+    private static readonly int Down = Animator.StringToHash("Down");
 
     private void Awake()
     {
@@ -27,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
         HandleAir();
         Flip();
         _moveInput = Input.GetAxis("Horizontal");
-         _playerAnimator.SetBool("Run", Mathf.Abs(_moveInput) >= 0.1f);
+         _playerAnimator.SetBool(Run, Mathf.Abs(_moveInput) >= 0.1f);
         _pRb.velocity = new Vector2(_moveInput * speedPlayer, _pRb.velocity.y);
     }
 
@@ -35,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && _onGround)
         {
-            _playerAnimator.SetTrigger("Jump");
+            _playerAnimator.SetTrigger(Jump);
             _pRb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
         
@@ -56,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(IsFalling())
         {
-            _playerAnimator.SetBool("Down", false);
+            _playerAnimator.SetBool(Down, false);
         }
     }
 
