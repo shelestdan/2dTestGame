@@ -5,17 +5,17 @@ using UnityEngine.SceneManagement;
 public class GUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject looserScreen;
-    public static GUIManager Instance;
-    public static bool GameIsPaused = false;
+    private static GUIManager _instance;
+    private static bool _gameIsPaused = false;
     public GameObject pauseMenuUI;
 
     private void Awake()
     {
-        if (Instance == null)
+        if (_instance == null)
         {
-            Instance = this;
+            _instance = this;
         }
-        else if (Instance == this)
+        else if (_instance == this)
         {
             Destroy(gameObject);
         }
@@ -23,16 +23,14 @@ public class GUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!Input.GetKeyDown(KeyCode.Escape)) return;
+        if (_gameIsPaused)
         {
-            if (GameIsPaused)
-            {
-                Resume();
-            }
-            else
-            {
-                Pause_menu();
-            }
+            Resume();
+        }
+        else
+        {
+            Pause_menu();
         }
     }
 
@@ -40,14 +38,14 @@ public class GUIManager : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
-        GameIsPaused = false;
+        _gameIsPaused = false;
     }
 
     private void Pause_menu()
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
-        GameIsPaused = true;
+        _gameIsPaused = true;
     }
 
     public void GameExit()

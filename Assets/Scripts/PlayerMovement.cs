@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
@@ -41,13 +42,20 @@ public class PlayerMovement : MonoBehaviour
             _playerAnimator.SetTrigger(Jump);
             _pRb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
-        
         CheckingGround();
     }
 
     private void CheckingGround()
     {
         _onGround = Physics2D.OverlapBox(groundCheck.position, new Vector2(1.1f, 1.2f), 0, ground);
+    }
+
+    private IEnumerator CorutineSample()
+    {
+        yield return new WaitForSeconds(0.1f);
+        speedPlayer += 30;
+        yield return new WaitForSeconds(10);
+        speedPlayer = 10;
     }
 
     private void Flip()
@@ -65,11 +73,11 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsFalling()
     {
-        if (_pRb.velocity.y < 0 && !_onGround)
-        {
-            return true;
-        }
+        return _pRb.velocity.y < 0 && !_onGround;
+    }
 
-        return false;
+    public void AddSpeed()
+    {
+        StartCoroutine(CorutineSample());
     }
 }
